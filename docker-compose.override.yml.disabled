@@ -1,0 +1,39 @@
+# Development Override Configuration
+# This file is automatically loaded when running docker-compose up
+
+version: '3.8'
+
+services:
+  # Frontend Development Override
+  frontend:
+    build:
+      target: development  # Use development stage
+    volumes:
+      - ./src:/app/src:ro  # Mount source code for hot reload
+      - ./node_modules:/app/node_modules  # Preserve node_modules
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "4200:4200"  # Expose Angular dev server port
+
+  # Backend Development Override
+  backend:
+    build:
+      target: development  # Use development stage
+    volumes:
+      - ./backend:/app:ro  # Mount source code for hot reload
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=true
+      - LOG_LEVEL=DEBUG
+
+  # Nginx Development Override
+  nginx:
+    ports:
+      - "8080:80"  # Use different port for development
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Use the same nginx config for development
+
+networks:
+  library-network:
+    driver: bridge

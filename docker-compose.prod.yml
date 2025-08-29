@@ -1,0 +1,77 @@
+# Production Docker Compose Configuration
+# Run with: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+version: '3.8'
+
+services:
+  # Frontend Production Override
+  frontend:
+    build:
+      target: production  # Use production stage
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Backend Production Override
+  backend:
+    build:
+      target: production  # Use production stage
+    restart: always
+    environment:
+      - FLASK_ENV=production
+      - FLASK_DEBUG=false
+      - LOG_LEVEL=WARNING
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+
+  # Nginx Production Override
+  nginx:
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./ssl:/etc/nginx/ssl:ro  # SSL certificates
+      - ./logs/nginx:/var/log/nginx
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.25'
+        reservations:
+          memory: 64M
+          cpus: '0.1'
+
+networks:
+  library-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: library-prod
+
+volumes:
+  library-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data
+

@@ -1,0 +1,106 @@
+<div class="admin-dashboard">
+  <div class="dashboard-header">
+    <h1>Admin Dashboard</h1>
+    <p>Welcome back, {{ authService.currentUser()?.firstName }}! Here's your library overview.</p>
+  </div>
+
+  <div class="stats-grid">
+    <mat-card class="stat-card books-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon">
+            <mat-icon>library_books</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>{{ totalBooks }}</h3>
+            <p>Total Books</p>
+            <small>{{ availableBooks }} available</small>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button routerLink="/admin/books">
+          <mat-icon>visibility</mat-icon>
+          View Books
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="stat-card members-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon">
+            <mat-icon>people</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>{{ totalMembers }}</h3>
+            <p>Active Members</p>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button routerLink="/admin/members">
+          <mat-icon>manage_accounts</mat-icon>
+          Manage Members
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="stat-card transactions-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon">
+            <mat-icon>assignment</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>{{ activeTransactions }}</h3>
+            <p>Active Issues</p>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button routerLink="/admin/transactions">
+          <mat-icon>list</mat-icon>
+          View All
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="stat-card quick-actions-card">
+      <mat-card-content>
+        <h3>Quick Actions</h3>
+        <div class="quick-actions">
+          <button mat-stroked-button routerLink="/admin/books" class="action-button">
+            <mat-icon>add</mat-icon>
+            Add Book
+          </button>
+          <button mat-stroked-button routerLink="/admin/members" class="action-button">
+            <mat-icon>person_add</mat-icon>
+            View Members
+          </button>
+          <button mat-stroked-button routerLink="/admin/transactions" class="action-button">
+            <mat-icon>assignment_return</mat-icon>
+            Issue/Return
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="recent-activity">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Recent Activity</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="activity-placeholder">
+          <mat-icon>timeline</mat-icon>
+          <p>Recent transactions and activities will appear here</p>
+          <button mat-button routerLink="/admin/transactions" color="primary">
+            View All Transactions
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

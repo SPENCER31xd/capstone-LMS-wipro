@@ -1,0 +1,189 @@
+.book-detail-dialog {
+  padding: 0;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.dialog-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+  padding: 8px;
+  display: flex;
+  justify-content: flex-end;
+  border-bottom: 1px solid #eee;
+
+  .close-button {
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.book-content {
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+}
+
+.book-image {
+  flex-shrink: 0;
+  width: 200px;
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.book-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.3;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.7);
+    font-style: italic;
+  }
+}
+
+.book-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    strong {
+      min-width: 100px;
+      color: #333;
+    }
+
+    .availability {
+      font-weight: 500;
+
+      &.available {
+        color: #4CAF50;
+      }
+
+      &.unavailable {
+        color: #F44336;
+      }
+    }
+
+    mat-chip {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+.book-description {
+  h4 {
+    margin: 0 0 8px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.6;
+    color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+
+  button {
+    align-self: flex-start;
+    min-width: 160px;
+
+    mat-spinner {
+      margin-right: 8px;
+    }
+
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+
+  .borrow-info {
+    small {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: rgba(0, 0, 0, 0.6);
+      font-size: 0.8rem;
+
+      mat-icon {
+        font-size: 16px;
+        height: 16px;
+        width: 16px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .book-content {
+    flex-direction: column;
+    padding: 16px;
+    gap: 20px;
+  }
+
+  .book-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    img {
+      max-width: 200px;
+    }
+  }
+
+  .book-info {
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+    }
+  }
+
+  .book-meta {
+    .meta-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+
+      strong {
+        min-width: auto;
+      }
+    }
+  }
+
+  .actions button {
+    width: 100%;
+  }
+}

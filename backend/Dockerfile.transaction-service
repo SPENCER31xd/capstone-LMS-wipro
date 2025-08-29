@@ -1,0 +1,40 @@
+# Python Flask Transaction Service
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements file
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy backend source code
+COPY . .
+
+# Create directory for database
+RUN mkdir -p /app/data
+
+# Expose port 5003
+EXPOSE 5003
+
+# Set environment variables
+ENV FLASK_APP=transaction_service.py
+ENV FLASK_ENV=production
+ENV DATABASE_URL=/app/data/library.db
+ENV HOST=0.0.0.0
+ENV PORT=5003
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD wget --quiet --tries=1 --spider http://localhost:5003/health || exit 1
+
+# Start the transaction service
+CMD ["python", "transaction_service.py"]

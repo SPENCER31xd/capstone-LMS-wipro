@@ -1,0 +1,77 @@
+<div class="book-list">
+  <div class="page-header">
+    <h1>Browse Books</h1>
+    <p>Discover your next great read</p>
+  </div>
+
+  <mat-card class="filters-card">
+    <mat-card-content>
+      <div class="filters">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search books</mat-label>
+          <input matInput [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" 
+                 placeholder="Search by title or author">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="category-field">
+          <mat-label>Category</mat-label>
+          <mat-select [(value)]="selectedCategory" (selectionChange)="onCategoryChange()">
+            <mat-option value="all">All Categories</mat-option>
+            <mat-option *ngFor="let category of categories" [value]="category">
+              {{ category }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="books-grid" *ngIf="!bookService.isLoading(); else loadingTemplate">
+    <mat-card class="book-card" *ngFor="let book of filteredBooks" (click)="viewBookDetails(book)">
+      <div class="book-image">
+        <img [src]="book.imageUrl || 'https://via.placeholder.com/150x200'" 
+             [alt]="book.title">
+      </div>
+      <mat-card-content>
+        <h3 class="book-title">{{ book.title }}</h3>
+        <p class="book-author">by {{ book.author }}</p>
+        <div class="book-meta">
+          <mat-chip>{{ book.category }}</mat-chip>
+          <span class="book-year">{{ book.publishedYear }}</span>
+        </div>
+        <p class="book-description">{{ book.description | slice:0:100 }}...</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="availability-info">
+          <span class="availability" 
+                [class.available]="book.availableCopies > 0"
+                [class.unavailable]="book.availableCopies === 0">
+            <mat-icon>{{ book.availableCopies > 0 ? 'check_circle' : 'cancel' }}</mat-icon>
+            {{ book.availableCopies > 0 ? 'Available' : 'Not Available' }}
+          </span>
+          <small>{{ book.availableCopies }} of {{ book.totalCopies }} copies</small>
+        </div>
+        <button mat-raised-button color="primary" 
+                [disabled]="book.availableCopies <= 0">
+          View Details
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div class="no-books" *ngIf="filteredBooks.length === 0 && !bookService.isLoading()">
+    <mat-icon>search_off</mat-icon>
+    <p>No books found matching your criteria</p>
+    <button mat-stroked-button (click)="searchTerm = ''; selectedCategory = 'all'; applyFilters()">
+      Clear Filters
+    </button>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+      <p>Loading books...</p>
+    </div>
+  </ng-template>
+</div>

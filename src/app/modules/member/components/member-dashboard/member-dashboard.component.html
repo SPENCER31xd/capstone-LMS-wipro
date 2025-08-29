@@ -1,0 +1,137 @@
+<div class="member-dashboard">
+  <div class="dashboard-header">
+    <h1>My Dashboard</h1>
+    <p>Welcome back, {{ authService.currentUser()?.firstName }}! Here's your reading overview.</p>
+  </div>
+
+  <div class="stats-grid">
+    <mat-card class="stat-card available-books-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon">
+            <mat-icon>library_books</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>{{ totalBooksAvailable }}</h3>
+            <p>Books Available</p>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button routerLink="/member/books">
+          <mat-icon>search</mat-icon>
+          Browse Books
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="stat-card active-books-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon">
+            <mat-icon>book</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>{{ myActiveBooks }}</h3>
+            <p>My Active Books</p>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button routerLink="/member/transactions">
+          <mat-icon>list</mat-icon>
+          View All
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="stat-card overdue-card" [class.has-overdue]="overdueBooks > 0">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon">
+            <mat-icon>schedule</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>{{ overdueBooks }}</h3>
+            <p>Overdue Books</p>
+            <small *ngIf="overdueBooks > 0" class="warning-text">
+              Please return overdue books to avoid fines
+            </small>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions *ngIf="overdueBooks > 0">
+        <button mat-button routerLink="/member/transactions" color="warn">
+          <mat-icon>warning</mat-icon>
+          View Overdue
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="stat-card quick-actions-card">
+      <mat-card-content>
+        <h3>Quick Actions</h3>
+        <div class="quick-actions">
+          <button mat-stroked-button routerLink="/member/books" class="action-button">
+            <mat-icon>search</mat-icon>
+            Browse Books
+          </button>
+          <button mat-stroked-button routerLink="/member/transactions" class="action-button">
+            <mat-icon>receipt</mat-icon>
+            My Transactions
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="recent-activity" *ngIf="recentTransactions.length > 0">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Recent Activity</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="activity-list">
+          <div class="activity-item" *ngFor="let transaction of recentTransactions">
+            <div class="activity-icon">
+              <mat-icon [color]="transaction.status === 'active' ? 'primary' : 'accent'">
+                {{ transaction.status === 'active' ? 'book' : 'assignment_return' }}
+              </mat-icon>
+            </div>
+            <div class="activity-info">
+              <div class="book-title">{{ transaction.book.title }}</div>
+              <div class="activity-details">
+                <span>{{ transaction.status === 'active' ? 'Borrowed' : 'Returned' }}</span>
+                <span class="activity-date">{{ transaction.issueDate | date:'mediumDate' }}</span>
+              </div>
+            </div>
+            <div class="activity-status">
+              <mat-chip [class]="'status-' + transaction.status">
+                {{ transaction.status | titlecase }}
+              </mat-chip>
+            </div>
+          </div>
+        </div>
+        <div class="view-all-actions">
+          <button mat-button routerLink="/member/transactions" color="primary">
+            View All Transactions
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="no-activity" *ngIf="recentTransactions.length === 0">
+    <mat-card>
+      <mat-card-content>
+        <div class="no-activity-content">
+          <mat-icon>menu_book</mat-icon>
+          <p>You haven't borrowed any books yet</p>
+          <button mat-raised-button color="primary" routerLink="/member/books">
+            Start Browsing Books
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

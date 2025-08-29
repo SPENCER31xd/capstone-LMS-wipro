@@ -1,0 +1,150 @@
+.transaction-management {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 300;
+    color: #333;
+  }
+}
+
+.filters-card {
+  margin-bottom: 24px;
+}
+
+.filters {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.status-field {
+  min-width: 200px;
+}
+
+.table-card {
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    h3 {
+      margin: 0;
+      color: #333;
+      font-weight: 500;
+    }
+  }
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.transactions-table {
+  width: 100%;
+
+  .book-info,
+  .member-info {
+    strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    small {
+      color: rgba(0, 0, 0, 0.6);
+      font-size: 12px;
+    }
+  }
+
+  .overdue-date {
+    color: #F44336;
+    font-weight: 500;
+  }
+
+  .status-active {
+    background: rgba(255, 193, 7, 0.1) !important;
+    color: #FFC107 !important;
+  }
+
+  .status-returned {
+    background: rgba(76, 175, 80, 0.1) !important;
+    color: #4CAF50 !important;
+  }
+
+  .status-overdue {
+    background: rgba(244, 67, 54, 0.1) !important;
+    color: #F44336 !important;
+  }
+
+  .fine-amount {
+    color: #F44336;
+    font-weight: 500;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .no-actions {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    font-style: italic;
+  }
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: rgba(0, 0, 0, 0.6);
+
+  mat-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    margin-bottom: 16px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 16px;
+  }
+}
+
+.loading-container {
+  text-align: center;
+  padding: 40px;
+
+  mat-spinner {
+    margin: 0 auto 16px auto;
+  }
+
+  p {
+    margin: 0;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+@media (max-width: 768px) {
+  .transaction-management {
+    padding: 16px;
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .status-field {
+    min-width: auto;
+    width: 100%;
+  }
+}

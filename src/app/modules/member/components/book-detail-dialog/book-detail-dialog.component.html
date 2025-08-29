@@ -1,0 +1,66 @@
+<div class="book-detail-dialog">
+  <div class="dialog-header">
+    <button mat-icon-button (click)="onClose()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="book-content">
+    <div class="book-image">
+      <img [src]="data.book.imageUrl || 'https://via.placeholder.com/200x300'" 
+           [alt]="data.book.title">
+    </div>
+
+    <div class="book-info">
+      <h2>{{ data.book.title }}</h2>
+      <h3>by {{ data.book.author }}</h3>
+
+      <div class="book-meta">
+        <div class="meta-item">
+          <strong>Category:</strong>
+          <mat-chip>{{ data.book.category }}</mat-chip>
+        </div>
+        <div class="meta-item">
+          <strong>Published:</strong>
+          <span>{{ data.book.publishedYear }}</span>
+        </div>
+        <div class="meta-item">
+          <strong>ISBN:</strong>
+          <span>{{ data.book.isbn }}</span>
+        </div>
+        <div class="meta-item">
+          <strong>Availability:</strong>
+          <span class="availability" 
+                [class.available]="data.book.availableCopies > 0"
+                [class.unavailable]="data.book.availableCopies === 0">
+            {{ data.book.availableCopies }} of {{ data.book.totalCopies }} available
+          </span>
+        </div>
+      </div>
+
+      <div class="book-description">
+        <h4>Description</h4>
+        <p>{{ data.book.description }}</p>
+      </div>
+
+      <div class="actions">
+        <button mat-raised-button color="primary" 
+                (click)="borrowBook()"
+                [disabled]="data.book.availableCopies <= 0 || isLoading">
+          <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+          <mat-icon *ngIf="!isLoading">book</mat-icon>
+          <span *ngIf="!isLoading">
+            {{ data.book.availableCopies > 0 ? 'Borrow Book' : 'Not Available' }}
+          </span>
+        </button>
+
+        <div class="borrow-info" *ngIf="data.book.availableCopies > 0">
+          <small>
+            <mat-icon>info</mat-icon>
+            Books can be borrowed for 14 days
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

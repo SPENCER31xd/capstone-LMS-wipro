@@ -1,0 +1,123 @@
+<div class="book-management">
+  <div class="page-header">
+    <h1>Book Management</h1>
+    <button mat-raised-button color="primary" (click)="openAddBookDialog()">
+      <mat-icon>add</mat-icon>
+      Add Book
+    </button>
+  </div>
+
+  <mat-card class="filters-card">
+    <mat-card-content>
+      <div class="filters">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search books</mat-label>
+          <input matInput [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" 
+                 placeholder="Search by title, author, or ISBN">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="category-field">
+          <mat-label>Category</mat-label>
+          <mat-select [(value)]="selectedCategory" (selectionChange)="onCategoryChange()">
+            <mat-option value="all">All Categories</mat-option>
+            <mat-option *ngFor="let category of categories" [value]="category">
+              {{ category }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="table-card">
+    <mat-card-content>
+      <div class="table-header">
+        <h3>Books ({{ filteredBooks.length }})</h3>
+      </div>
+
+      <div class="table-container" *ngIf="!bookService.isLoading(); else loadingTemplate">
+        <table mat-table [dataSource]="filteredBooks" class="books-table">
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>Title</th>
+            <td mat-cell *matCellDef="let book">
+              <div class="book-title">
+                <strong>{{ book.title }}</strong>
+                <small>{{ book.publishedYear }}</small>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="author">
+            <th mat-header-cell *matHeaderCellDef>Author</th>
+            <td mat-cell *matCellDef="let book">{{ book.author }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef>Category</th>
+            <td mat-cell *matCellDef="let book">
+              <mat-chip-set>
+                <mat-chip>{{ book.category }}</mat-chip>
+              </mat-chip-set>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="isbn">
+            <th mat-header-cell *matHeaderCellDef>ISBN</th>
+            <td mat-cell *matCellDef="let book">{{ book.isbn }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="totalCopies">
+            <th mat-header-cell *matHeaderCellDef>Total Copies</th>
+            <td mat-cell *matCellDef="let book">{{ book.totalCopies }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="availableCopies">
+            <th mat-header-cell *matHeaderCellDef>Available</th>
+            <td mat-cell *matCellDef="let book">
+              <span class="availability" 
+                    [class.available]="book.availableCopies > 0"
+                    [class.unavailable]="book.availableCopies === 0">
+                {{ book.availableCopies }}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let book">
+              <div class="actions">
+                <button mat-icon-button (click)="openEditBookDialog(book)" 
+                        matTooltip="Edit Book">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="deleteBook(book)" 
+                        matTooltip="Delete Book">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div class="no-data" *ngIf="filteredBooks.length === 0">
+          <mat-icon>library_books</mat-icon>
+          <p>No books found</p>
+          <button mat-stroked-button color="primary" (click)="openAddBookDialog()">
+            Add First Book
+          </button>
+        </div>
+      </div>
+
+      <ng-template #loadingTemplate>
+        <div class="loading-container">
+          <mat-spinner></mat-spinner>
+          <p>Loading books...</p>
+        </div>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</div>

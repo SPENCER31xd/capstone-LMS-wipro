@@ -1,0 +1,75 @@
+<h2 mat-dialog-title>
+  {{ data.mode === 'add' ? 'Add New Book' : 'Edit Book' }}
+</h2>
+
+<form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <div class="form-grid">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" required>
+        <mat-error>{{ getErrorMessage('title') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Author</mat-label>
+        <input matInput formControlName="author" required>
+        <mat-error>{{ getErrorMessage('author') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>ISBN</mat-label>
+        <input matInput formControlName="isbn" required placeholder="e.g., 9781234567890">
+        <mat-error>{{ getErrorMessage('isbn') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category" required>
+          <mat-option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </mat-option>
+        </mat-select>
+        <mat-error>{{ getErrorMessage('category') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Published Year</mat-label>
+        <input matInput type="number" formControlName="publishedYear" required>
+        <mat-error>{{ getErrorMessage('publishedYear') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Total Copies</mat-label>
+        <input matInput type="number" formControlName="totalCopies" required min="1">
+        <mat-error>{{ getErrorMessage('totalCopies') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description" required rows="3" 
+                  placeholder="Brief description of the book"></textarea>
+        <mat-error>{{ getErrorMessage('description') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Image URL (Optional)</mat-label>
+        <input matInput formControlName="imageUrl" placeholder="https://example.com/book-cover.jpg">
+        <mat-error>{{ getErrorMessage('imageUrl') }}</mat-error>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()" [disabled]="isLoading">
+      Cancel
+    </button>
+    <button mat-raised-button color="primary" type="submit" 
+            [disabled]="bookForm.invalid || isLoading">
+      <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+      <span *ngIf="!isLoading">
+        {{ data.mode === 'add' ? 'Add Book' : 'Update Book' }}
+      </span>
+    </button>
+  </mat-dialog-actions>
+</form>
